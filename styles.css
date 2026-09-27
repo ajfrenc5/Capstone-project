@@ -219,10 +219,28 @@
 /* 4. COMPONENTS LAYER */
 @layer components {
   /* Component 1 Navigation */
+  /* Narrow default: 2x2 grid so links never wrap into uneven rows. */
   .site-nav-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
+  }
+
+  .site-nav-list .site-nav-link {
+    display: block;
+    text-align: center;
+  }
+
+  /* Breakpoint observed at ~416px: all four links fit on one row. */
+  @media (min-width: 26em) {
+    .site-nav-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .site-nav-list .site-nav-link {
+      display: inline-block;
+    }
   }
 
   .site-nav-link {
@@ -333,9 +351,17 @@
 
   .comparison-table th {
     background-color: var(--color-surface-alt);
-    font-family: var(--font-heading);
+    font-family: var(--font-base);
     font-weight: 700;
     color: var(--color-text);
+  }
+
+  /* Breakpoint observed at ~965px: the full table fits with the wide
+     pixel-font headers, so they are only used from here up. */
+  @media (min-width: 60.5em) {
+    .comparison-table th {
+      font-family: var(--font-heading);
+    }
   }
 
   .comparison-table tbody tr:hover {
