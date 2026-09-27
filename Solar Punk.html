@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solarpunk Field Guide · CSS Architecture Prototype</title>
+
+  <!-- Google Fonts Embed: Anta & Press Start 2P -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header acts as its own container using utility/layout classes directly -->
+  <header class="site-header">
+    <div class="site-container site-header-inner">
+      <a class="site-nav-link" href="#" style="font-size: 1.2rem; font-weight: 700;">Solarpunk Field Guide</a>
+      <nav aria-label="Main Navigation">
+        <ul class="site-nav-list">
+          <li><a class="site-nav-link" aria-current="page" href="#">Home</a></li>
+          <li><a class="site-nav-link" href="#gallery">Gallery</a></li>
+          <li><a class="site-nav-link" href="#systems">DIY Systems</a></li>
+          <li><a class="site-nav-link" href="#community">Community</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main site-container">
+    <section class="section section-prose">
+      <p class="eyebrow">Regenerative Practice</p>
+      <h1>A living archive of low-tech tools, mutual aid, and solar culture.</h1>
+      <p>The Solarpunk Field Guide gathers open hardware schematics, community workshop templates, and aesthetic works bridging ecological restoration with human technology.</p>
+      <p class="cluster">
+        <a class="button" href="#systems">Explore Systems</a>
+        <span class="eyebrow">Edition 2026.1</span>
+      </p>
+    </section>
+
+    <!-- Semantic aside instead of a generic container -->
+    <aside class="callout-alert" id="safety-notice">
+      <h3>Safety Notice: High-Voltage Systems</h3>
+      <p>Always disconnect photovoltaic inputs and utilize insulated tools when servicing charge controllers or lithium-iron-phosphate battery banks.</p>
+    </aside>
+
+    <!-- Table scroller div is kept because overflow-x on semantic table tags is inconsistent across browsers -->
+    <section class="section" id="systems">
+      <h2>DIY Resilience Systems</h2>
+      <p>Compare decentralized infrastructure setups for neighborhood and household implementation.</p>
+      <div class="table-scroller">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th scope="col">System</th>
+              <th scope="col">Primary Function</th>
+              <th scope="col">Complexity</th>
+              <th scope="col">Typical Cost</th>
+              <th scope="col">Maintainability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Rainwater Catchment</th>
+              <td>Passive gravity irrigation</td>
+              <td>Low</td>
+              <td>$50 – $150</td>
+              <td>High (Seasonal flush)</td>
+            </tr>
+            <tr>
+              <th scope="row">Off-Grid Solar Caddy</th>
+              <td>Emergency 12V / USB power</td>
+              <td>Medium</td>
+              <td>$200 – $450</td>
+              <td>Medium (Annual test)</td>
+            </tr>
+            <tr>
+              <th scope="row">Bioponic Digester</th>
+              <td>Methane gas / fertilizer</td>
+              <td>High</td>
+              <td>$350 – $800</td>
+              <td>Low (Weekly balance)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Grid applied directly to the section rather than an extra nested div -->
+    <section class="section" id="gallery">
+      <h2>Visual Concepts</h2>
+      <div class="grid-cards">
+        <!-- Cards streamlined: no nested .art-card-body div, metadata uses semantic <footer> -->
+        <article class="art-card">
+          <h3>Passive Cooling Arcades</h3>
+          <p>Architectural thermal chimneys designed using regional clay brick and living vine canopies.</p>
+          <footer class="art-card-meta">License: CC BY-SA 4.0 · Open Source Design</footer>
+        </article>
+
+        <article class="art-card">
+          <h3>Neighborhood Micro-Grid</h3>
+          <p>Peer-to-peer energy routing diagrams connecting residential rooftop arrays with public battery stations.</p>
+          <footer class="art-card-meta">License: CC0 Public Domain · Solarpunk Commons</footer>
+        </article>
+
+        <article class="art-card">
+          <h3>Sub-Surface Wick Irrigation</h3>
+          <p>Low-evaporation passive hydration vessels engineered for drought conditions and container gardening.</p>
+          <footer class="art-card-meta">License: CC BY 4.0 · Open Agriculture Lab</footer>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Applied container and cluster classes directly onto the semantic footer -->
+  <footer class="site-footer">
+    <div class="site-container cluster" style="justify-content: space-between;">
+      <p>Solarpunk Field Guide — © 2026</p>
+      <p><a href="https://creativecommons.org" target="_blank" rel="noopener">Open Culture Commons</a></p>
+    </div>
+  </footer>
+</body>
+</html>

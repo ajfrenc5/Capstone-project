@@ -1,0 +1,465 @@
+@import url("https://fonts.googleapis.com/css2?family=Anta&family=Press+Start+2P&display=swap");
+
+@layer reset, base, layout, components, utilities, overrides;
+
+/* 1. RESET LAYER */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  ul,
+  ol,
+  figure,
+  blockquote,
+  table,
+  th,
+  td {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  img,
+  svg {
+    display: block;
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+}
+
+/* 2. BASE LAYER */
+@layer base {
+  :root {
+    /* Color Tokens */
+    --color-surface: #f4f6f0;
+    --color-surface-raised: #ffffff;
+    --color-surface-alt: #e9ede4;
+    --color-text: #1b261b;
+    --color-text-muted: #4a5d4e;
+    --color-primary: #2d6a4f;
+    --color-primary-hover: #1b4332;
+    --color-accent: #d4a373;
+    --color-border: #d0d7cf;
+    --color-warning: #b23a22;
+    --color-warning-surface: #fdf2f0;
+    --color-link: #1b5e20;
+    --color-focus: #2d6a4f;
+
+    /* Typography Tokens */
+    --font-base: "Anta", sans-serif;
+    --font-heading: "Press Start 2P", system-ui;
+    --line-height-base: 1.6;
+    --line-height-heading: 1.4;
+
+    /* Spacing Tokens */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* Shape & Elevation Tokens */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --border-width: 1px;
+    --shadow-subtle: 0 2px 6px rgba(27, 38, 27, 0.05);
+    --shadow-raised: 0 4px 12px rgba(27, 38, 27, 0.08);
+
+    /* Layout Constraints */
+    --container-max: 72rem;
+    --measure-text: 65ch;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-base);
+    font-size: 1rem;
+    line-height: var(--line-height-base);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    line-height: var(--line-height-heading);
+    color: var(--color-text);
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-size: clamp(1.25rem, 2.5vw + 0.5rem, 1.75rem);
+    margin-block-end: var(--space-4);
+  }
+
+  h2 {
+    font-size: clamp(1rem, 1.8vw + 0.25rem, 1.35rem);
+    margin-block-end: var(--space-3);
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin-block-end: var(--space-2);
+  }
+
+  p {
+    margin-block-end: var(--space-4);
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* 3. LAYOUT LAYER */
+@layer layout {
+  .site-container {
+    max-inline-size: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+
+  .site-header {
+    background-color: var(--color-surface-raised);
+    border-block-end: var(--border-width) solid var(--color-border);
+    padding-block: var(--space-4);
+  }
+
+  .site-header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .site-main {
+    padding-block: var(--space-8) var(--space-16);
+  }
+
+  .section {
+    padding-block: var(--space-6);
+  }
+
+  .section-prose {
+    max-inline-size: var(--measure-text);
+  }
+
+  .grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-block-start: var(--space-6);
+  }
+
+  .table-scroller {
+    inline-size: 100%;
+    overflow-x: auto;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-raised);
+    margin-block: var(--space-6);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .site-footer {
+    background-color: var(--color-surface-alt);
+    border-block-start: var(--border-width) solid var(--color-border);
+    padding-block: var(--space-8);
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+  }
+}
+
+/* 4. COMPONENTS LAYER */
+@layer components {
+  /* Component 1 Navigation */
+  .site-nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .site-nav-link {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-text);
+    border-radius: var(--radius-sm);
+    border-block-end: 2px solid transparent;
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .site-nav-link:hover {
+    background-color: var(--color-surface-alt);
+    color: var(--color-primary);
+  }
+
+  .site-nav-link[aria-current="page"] {
+    color: var(--color-primary);
+    border-block-end-color: var(--color-primary);
+    background-color: var(--color-surface-alt);
+  }
+
+  /* Component 2 Action Button */
+  .button {
+    --button-bg: var(--color-primary);
+    --button-fg: #ffffff;
+    --button-border: var(--color-primary);
+    --button-hover-bg: var(--color-primary-hover);
+
+    display: inline-block;
+    padding: var(--space-3) var(--space-6);
+    background-color: var(--button-bg);
+    color: var(--button-fg);
+    border: var(--border-width) solid var(--button-border);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+  }
+
+  .button:hover {
+    background-color: var(--button-hover-bg);
+    border-color: var(--button-hover-bg);
+    color: var(--button-fg);
+  }
+
+  .button:active {
+    transform: translateY(1px);
+  }
+
+  /* Component 3 Art Card */
+  .art-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-surface-raised);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-subtle);
+    overflow: hidden;
+  }
+
+  .art-card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: var(--space-4);
+  }
+
+  .art-card-body p {
+    color: var(--color-text-muted);
+    flex-grow: 1;
+    margin-block-end: var(--space-4);
+  }
+
+  .art-card-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    border-block-start: var(--border-width) solid var(--color-border);
+    padding-block-start: var(--space-2);
+  }
+
+  /* Component 4 Comparison Table */
+  .comparison-table {
+    inline-size: 100%;
+    text-align: start;
+    font-size: 0.95rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: var(--space-3) var(--space-4);
+    border-block-end: var(--border-width) solid var(--color-border);
+  }
+
+  .comparison-table th {
+    background-color: var(--color-surface-alt);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .comparison-table tbody tr:hover {
+    background-color: var(--color-surface);
+  }
+
+  /* Component 5 Callout Alert */
+  .callout-alert {
+    --alert-accent: var(--color-warning);
+    --alert-bg: var(--color-warning-surface);
+
+    padding: var(--space-4) var(--space-6);
+    background-color: var(--alert-bg);
+    border: var(--border-width) solid var(--color-border);
+    border-inline-start: 6px solid var(--alert-accent);
+    border-radius: var(--radius-sm);
+    margin-block: var(--space-6);
+  }
+
+  .callout-alert h3 {
+    color: var(--alert-accent);
+  }
+
+  .callout-alert p:last-child {
+    margin-block-end: 0;
+  }
+
+  .callout-alert:target,
+  .section:target {
+    animation: target-highlight 1.5s ease-out;
+  }
+
+  @keyframes target-highlight {
+    0% {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 4px;
+    }
+    100% {
+      outline: 3px solid transparent;
+      outline-offset: 4px;
+    }
+  }
+}
+
+/* 5. UTILITIES LAYER */
+@layer utilities {
+  .visually-hidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  .eyebrow {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+    margin-block-end: var(--space-2);
+  }
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+}
+
+/*  6. OVERRIDES LAYER */
+@layer overrides {
+  .no-scroll {
+    overflow: hidden !important;
+  }
+}
+
+/* PRINT ENHANCEMENTS */
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  .site-header,
+  .site-footer,
+  .button {
+    display: none !important;
+  }
+
+  .site-container {
+    max-inline-size: 100%;
+    padding-inline: 0;
+  }
+
+  .table-scroller {
+    overflow: visible;
+    border: none;
+  }
+
+  .comparison-table {
+    border: 1px solid #000000;
+    page-break-inside: avoid;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    border: 1px solid #000000;
+  }
+
+  .art-card,
+  .callout-alert {
+    border: 1px solid #000000;
+    page-break-inside: avoid;
+    margin-block-end: 1cm;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+}
