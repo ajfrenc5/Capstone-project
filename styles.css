@@ -373,6 +373,29 @@
       outline-offset: 4px;
     }
   }
+  
+  /* Event Schedule */
+  .event-schedule {
+    display: grid;
+    grid-template-columns: fit-content(10rem) 1fr;
+    column-gap: var(--space-6);
+    row-gap: var(--space-6);
+    margin-block-start: var(--space-6);
+  }
+
+  .event-schedule dt {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .event-schedule dd {
+    margin: 0;
+  }
+
+  .event-schedule dd p {
+    color: var(--color-text-muted);
+    margin-block-end: 0;
+  }
 }
 
 /* 5. UTILITIES LAYER */
