@@ -446,6 +446,20 @@
     .event-schedule dd {
       margin-block-end: 0;
     }
+    
+  /* User preference: reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .callout-alert:target,
+    .section:target {
+      animation: none;
+      outline: 3px solid var(--color-accent);
+      outline-offset: 4px;
+    }
+
+    .button:active {
+      transform: none;
+    }
+  }
   }
 
 /* 5. UTILITIES LAYER */
