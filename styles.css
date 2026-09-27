@@ -242,6 +242,11 @@
     background-color: var(--color-surface-alt);
   }
 
+  .site-brand {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
   /* Component 2 Action Button */
   .button {
     --button-bg: var(--color-primary);
