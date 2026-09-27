@@ -96,6 +96,7 @@
     /* Layout Constraints */
     --container-max: 72rem;
     --measure-text: 65ch;
+    --gutter: clamp(1rem, 0.5rem + 2vw, 2.5rem);
   }
 
   body {
@@ -155,7 +156,7 @@
 /* 3. LAYOUT LAYER */
 @layer layout {
  .site-container {
-  inline-size: min(100% - (var(--space-4) * 2), var(--container-max));
+  inline-size: min(100% - (var(--gutter) * 2), var(--container-max));
   margin-inline: auto;
 }
 
