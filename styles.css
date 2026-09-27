@@ -283,6 +283,7 @@
   }
 
   /* Component 3 Art Card */
+
   .art-card {
     display: flex;
     flex-direction: column;
@@ -378,13 +379,16 @@
     }
   }
   
-  /* Event Schedule */
+  /* Component 6 Event Schedule */
+  /* The wrapper is the container the schedule responds to. */
+  .event-schedule-wrap {
+    container: event-schedule / inline-size;
+    margin-block-start: var(--space-6);
+  }
+
   .event-schedule {
     display: grid;
-    grid-template-columns: fit-content(10rem) 1fr;
-    column-gap: var(--space-6);
-    row-gap: var(--space-6);
-    margin-block-start: var(--space-6);
+    row-gap: var(--space-1);
   }
 
   .event-schedule dt {
@@ -393,14 +397,30 @@
   }
 
   .event-schedule dd {
-    margin: 0;
+    margin-inline: 0;
+    margin-block: 0 var(--space-6);
+  }
+
+  .event-schedule dd:last-child {
+    margin-block-end: 0;
   }
 
   .event-schedule dd p {
     color: var(--color-text-muted);
     margin-block-end: 0;
   }
-}
+
+  @container event-schedule (inline-size >= 30rem) {
+    .event-schedule {
+      grid-template-columns: fit-content(10rem) 1fr;
+      column-gap: var(--space-6);
+      row-gap: var(--space-6);
+    }
+
+    .event-schedule dd {
+      margin-block-end: 0;
+    }
+  }
 
 /* 5. UTILITIES LAYER */
 @layer utilities {
