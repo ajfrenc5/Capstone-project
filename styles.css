@@ -280,6 +280,18 @@
   block-size: 2rem;
   flex-shrink: 0;
 }
+/* Heading with a decorative icon beside it */
+.heading-with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.heading-with-icon svg {
+  inline-size: 1.5em;
+  block-size: 1.5em;
+  flex-shrink: 0;
+}
 
   /* Component 2 Action Button */
   .button {
