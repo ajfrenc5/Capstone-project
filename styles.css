@@ -469,7 +469,8 @@
     .event-schedule dd {
       margin-block-end: 0;
     }
-    
+  }
+
   /* User preference: reduced motion. */
   @media (prefers-reduced-motion: reduce) {
     .callout-alert:target,
@@ -483,7 +484,7 @@
       transform: none;
     }
   }
-  }
+}
 
 /* 5. UTILITIES LAYER */
 @layer utilities {
