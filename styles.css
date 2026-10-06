@@ -265,6 +265,24 @@
     background-color: var(--color-surface-alt);
   }
 
+/* Skip link: hidden off-screen until it receives keyboard focus */
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--space-2);
+    inset-inline-start: var(--space-2);
+    z-index: 100;
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    transform: translateY(-150%);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
 /* Brand: logo sits beside the site name */
 .site-brand {
   display: inline-flex;
