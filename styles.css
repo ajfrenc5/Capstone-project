@@ -70,8 +70,9 @@
     --color-focus: #2d6a4f;
 
     /* Typography Tokens */
-    --font-base: "Anta", sans-serif;
-    --font-heading: "Press Start 2P", system-ui;
+    --font-base: "Space Grotesk", system-ui, sans-serif;  /* body text */
+    --font-heading: "Anta", system-ui, sans-serif;         /* h1–h4 */
+    --font-brand: "Press Start 2P", system-ui, monospace;  /* site name + buttons */
     --line-height-base: 1.6;
     --line-height-heading: 1.4;
 
@@ -105,6 +106,7 @@
     font-family: var(--font-base);
     font-size: 1rem;
     line-height: var(--line-height-base);
+    letter-spacing: -0.02em;
   }
 
   h1,
@@ -116,6 +118,7 @@
     color: var(--color-text);
     text-wrap: balance;
     letter-spacing: -0.02em;
+    font-weight: 400;
   }
 
   h1 {
@@ -288,8 +291,19 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 400;
+}
+
+.site-brand, button, .button {
+  font-family: var(--font-brand);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+
+/* Site name: larger than buttons. Comes after the shared rule so it wins. */
+.site-brand {
+  font-size: 1rem;
 }
 
 /* Logo size in rem so it scales with zoom */
@@ -324,7 +338,7 @@
     color: var(--button-fg);
     border: var(--border-width) solid var(--button-border);
     border-radius: var(--radius-sm);
-    font-weight: 600;
+    font-weight: 400;
     text-decoration: none;
     text-align: center;
     cursor: pointer;
@@ -390,20 +404,13 @@
     border-block-end: var(--border-width) solid var(--color-border);
   }
 
-  .comparison-table th {
+    .comparison-table th {
     background-color: var(--color-surface-alt);
-    font-family: var(--font-base);
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-weight: 400;
     color: var(--color-text);
   }
-
-  /* Breakpoint observed at ~965px: the full table fits with the wide
-     pixel-font headers, so they are only used from here up. */
-  @media (min-width: 60.5em) {
-    .comparison-table th {
-      font-family: var(--font-heading);
-    }
-  }
+  
 
   .comparison-table tbody tr:hover {
     background-color: var(--color-surface);
