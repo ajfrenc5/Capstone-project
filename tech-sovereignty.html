@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tech Sovereignty · Solarpunk Hub</title>
+
+  <!-- Google Fonts Embed: Anta (headings), Press Start 2P (site name + buttons), Space Grotesk (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- Header acts as its own container using utility/layout classes directly -->
+  <header class="site-header">
+    <div class="site-container site-header-inner">
+      <a class="site-nav-link site-brand" href="index.html">
+  <!-- ASSET: circuit-tree-icon-192x192.png (site logo) Source: AI-generated with Gemini by Anitra French, September 2026 Optimization: 192x192 version from favicon package (512px original), displayed at 32px so it stays sharp on high-resolution screens.-->
+      <img src="images/circuit-tree-icon-192x192.png" alt="" width="32" height="32">Solarpunk Hub</a>
+      <nav aria-label="Main Navigation">
+        <ul class="site-nav-list">
+          <li><a class="site-nav-link" href="index.html">Home</a></li>
+          <li><a class="site-nav-link" aria-current="page" href="tech-sovereignty.html">Tech Sovereignty</a></li>
+          <li><a class="site-nav-link" href="community-resilience.html">Community Resilience</a></li>
+          <li><a class="site-nav-link" href="gallery.html">Gallery / Media</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main site-container" id="main-content">
+    <section class="section section-prose">
+      <h1>Tech Sovereignty</h1>
+      <p>Own your tools, energy, and technology. Guides and projects for building systems you control.</p>
+    </section>
+    <!-- Semantic aside instead of a generic container -->
+    <aside class="callout-alert" id="safety-notice" aria-labelledby="safety-notice-title">
+     <h2 id="safety-notice-title">Safety Notice: High-Voltage Systems</h2>
+      <p>Always disconnect photovoltaic inputs and utilize insulated tools when servicing charge controllers or lithium-iron-phosphate battery banks.</p>
+    </aside>
+
+    <!-- Table scroller div is kept because overflow-x on semantic table tags is inconsistent across browsers -->
+    <section class="section" id="systems">
+      <h2>DIY Resilience Systems</h2>
+      <p>Compare decentralized infrastructure setups for neighborhood and household implementation.</p>
+      <div class="table-scroller">
+        <table class="comparison-table">
+          <caption>Comparison of DIY resilience systems by function, complexity, cost, and maintainability</caption>
+          <thead>
+            <tr>
+              <th scope="col">System</th>
+              <th scope="col">Primary Function</th>
+              <th scope="col">Complexity</th>
+              <th scope="col">Typical Cost</th>
+              <th scope="col">Maintainability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Rainwater Catchment</th>
+              <td>Passive gravity irrigation</td>
+              <td>Low</td>
+              <td>$50 – $150</td>
+              <td>High (Seasonal flush)</td>
+            </tr>
+            <tr>
+              <th scope="row">Off-Grid Solar Caddy</th>
+              <td>Emergency 12V / USB power</td>
+              <td>Medium</td>
+              <td>$200 – $450</td>
+              <td>Medium (Annual test)</td>
+            </tr>
+            <tr>
+              <th scope="row">Bioponic Digester</th>
+              <td>Methane gas / fertilizer</td>
+              <td>High</td>
+              <td>$350 – $800</td>
+              <td>Low (Weekly balance)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-container site-footer-inner cluster">
+      <p>Solarpunk Hub — © 2026</p>
+      <p>Code licensed under <a href="https://github.com/ajfrenc5/Capstone-project/blob/main/LICENSE" target="_blank" rel="noopener">GNU GPLv3</a></p>
+    </div>
+  </footer>
+</body>
+</html>
