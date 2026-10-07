@@ -188,6 +188,23 @@
   .section-prose {
     max-inline-size: var(--measure-text);
   }
+    /* Hero: text and image side by side when there's room, stacked when not.
+     Same auto-fit approach as .grid-cards, so no media query is needed. */
+  .hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .hero-text {
+    max-inline-size: var(--measure-text);
+  }
+
+  .hero-image {
+    inline-size: 100%;
+    border-radius: var(--radius-md);
+  }
 
   .grid-cards {
     display: grid;
@@ -495,6 +512,27 @@
     .event-schedule dd {
       margin-block-end: 0;
     }
+  }
+
+  /* Component 7 Intro Panel: green panel that introduces solarpunk */
+  .intro-panel {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-md);
+    margin-block: var(--space-6);
+  }
+  .intro-panel .section-prose {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .intro-panel h2 {
+    color: var(--color-surface);
+  }
+
+  .intro-panel p:last-child {
+    margin-block-end: 0;
   }
 
   /* User preference: reduced motion. */
