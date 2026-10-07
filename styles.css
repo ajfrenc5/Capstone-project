@@ -234,8 +234,8 @@
     text-align: center;
   }
 
-  /* Breakpoint observed at ~416px: all four links fit on one row. */
-  @media (min-width: 26em) {
+  /* Breakpoint observed at ~618px: all four links fit on one row. */
+  @media (min-width: 39em) {
     .site-nav-list {
       display: flex;
       flex-wrap: wrap;
