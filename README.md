@@ -285,3 +285,155 @@ Claude: I used Claude as a step-by-step guide. It explained concepts, suggested 
 What I decided: I chose which fonts did which job (Press Start 2P for the site name and buttons, Anta for headings), chose to remove the breakpoint instead of rewriting the note, decided to drop the Wikimedia photos, and decided which images were informative or decorative.
 Verification: I made every change in my own files and checked each one in the browser. Claude found the stray brace, the missing line-height tokens, the faux-bold weights, and the outdated logo and font comments, and I fixed each one myself.
 What I didn't do: responsive image sets, <picture>, and image compression were not done in this module, so this log doesn't claim them.
+
+---------------------------------------------------------------------------------------------------------------
+Accessibility Audit and Remediation Log
+
+In Module 5, I audited my capstone site for accessibility, fixed the problems I found, and retested each fix. I started with an automated WAVE scan of my single-page site, then fixed shared parts of the page (headings, page title, skip link) before splitting the site into four pages so every new page would inherit those fixes. I finished with one testing session covering keyboard use, zoom, reflow, text spacing, contrast, and the accessibility tree, and documented everything in my audit report.
+
+Baseline WAVE scan (Home): 0 errors, 0 contrast errors, 1 alert (skipped heading level), AIM score 10/10. I saved screenshots of the Summary and Structure tabs as "before" evidence.
+Fix 1, skipped heading level: The Safety Notice heading was an h3 directly after the page's h1. I changed it to an h2, added aria-labelledby so the <aside> landmark is announced by name, and set font-size: 1rem in CSS to keep the original look. Retest: WAVE showed 0 alerts, the Structure tab showed h1 then h2, and the ARIA count went from 3 to 4.
+Fix 2, page title: The title still read "Solarpunk Field Guide · CSS Architecture Prototype," left over from an earlier assignment. I changed it to a page-first title ("Home · ..."). I screenshotted the browser tab before the change.
+Fix 3, skip link: Pressing Tab first landed on the logo, so keyboard users had to pass five links on every page. I added a "Skip to main content" link as the first element in <body>, gave <main> the id main-content, and styled the link to stay off-screen until it receives focus. Retest: the link appears on the first Tab, and Enter moves focus to the main content.
+Report setup: I built my audit report in Google Docs using my instructor's model template, with real heading styles so the document outline is navigable.
+
+I sketched layouts for four pages (Home, Tech Sovereignty, Community Resilience, Gallery / Media) and turned them into Figma wireframes and mockups.
+I renamed the site Solarpunk Hub, rebuilt the Home hero (heading, two buttons, hero image), added a "What is solarpunk?" intro panel, and updated font roles: Anta for headings, Press Start 2P for the site name and buttons, and Space Grotesk for body text.
+October 6–7: Page split and remaining fixes
+Fix 4, table caption: The comparison table had header cells and scope attributes but no name. I added a <caption> describing the table. It now lives on the Tech Sovereignty page.
+Fix 5, logo link: The logo linked to href="#", which did nothing and could not take users home from other pages. I changed it to index.html.
+Page split: I built tech-sovereignty.html, gallery.html, and community-resilience.html, moving existing sections out of index.html. Every page has a unique title, one h1, the skip link, and aria-current="page" on its own nav link.
+I checked my CSS for a reported missing closing brace in the event-schedule container query. My current file was already correct, so I made no change.
+
+Test|Page(s)|	Result
+WAVE	Home, Tech Sovereignty, Gallery	0 errors and 0 contrast errors on all three. 1 alert per page ("redundant link": logo and Home both link to index.html), reviewed and kept as a standard convention.
+Keyboard	Tech Sovereignty	Pass. Order: skip link → logo → four nav links → footer link. Visible focus on every stop; Shift+Tab works with no keyboard trap.
+Zoom 200%	Tech Sovereignty	Pass.
+Reflow	Tech Sovereignty	Pass at 375px: only the table scrolls sideways, inside its own keyboard-focusable box (allowed exception for data tables). 320px width retest pending.
+Text spacing	Home (local copy)	Pass. Line height 1.5, paragraph spacing 2em, letter spacing 0.12em, word spacing 0.16em applied with a bookmarklet; no clipped or overlapping text.
+State contrast	Site-wide tokens	Focus outline 
+#2d6a4f on 
+#f4f6f0: 5.86:1 (needs 3:1). Current-page link 
+#2d6a4f on 
+#e9ede4: 5.38:1 (needs 4.5:1).
+Accessibility tree	Tech Sovereignty table	"System" header: role columnheader, name "System." Table: role table, named from its caption.
+
+I filled in my audit report: test scope, out of scope, test environment, evidence table, tool limitation, remediation log, conformance summary, and AI disclosure, then placed my screenshots with captions.
+Remediation summary
+No	Issue	WCAG	Priority	Fix	Retest
+1	Skipped heading level in Safety Notice	1.3.1	Medium	h3 → h2, added aria-labelledby	WAVE 0 alerts; outline h1 → h2
+2	Outdated, non-descriptive page title	2.4.2	Medium	Unique, page-first titles	Each tab shows its own page name
+3	No skip link	2.4.1	High	Skip link targeting #main-content	Visible on first Tab; Enter jumps to content
+4	Data table had no name	1.3.1	Medium	Added <caption>	Accessibility tree: table named from caption
+5	Logo link went to #	2.4.4	Low	href="index.html"	Logo returns to Home
+Tool limitation
+
+WAVE gave my Home page a perfect 10/10 score at baseline while missing four problems I found by hand: the skip link, the outdated title, the unnamed table, and the broken logo link. Automated tools can't judge focus order, alt-text accuracy, or how content behaves at different zoom levels, and the accessibility tree shows what a screen reader receives without being a real screen reader test.
+
+Out of scope
+Community Resilience was built but not formally tested.
+The site has no forms, audio, video, embeds, or login, so those checks are not applicable.
+The prefers-reduced-motion rule exists, but no current link triggers the animation it controls, so motion was not tested.
+Remaining limitations and next steps
+Test Community Resilience with the same checks.
+Test with a screen reader (NVDA or VoiceOver) and in Firefox and Safari.
+Test on a physical mobile device.
+Add a "(opens in new tab)" notice to the footer license link.
+Rerun WAVE and contrast checks after future visual changes.
+
+AI disclosure
+I used Claude (Anthropic) as an AI assistant in Module 5.
+Purpose: Claude walked me through the audit step by step, explained the WCAG criteria behind each check, suggested which tests to run. Claude also helped me draft the wording of my audit report and this README from my test results. 
+Verification: I made every code change myself, ran every test myself (WAVE, keyboard, zoom, reflow, text spacing, WebAIM Contrast Checker, Chrome DevTools accessibility tree), and took all of the screenshots. When Claude reported a missing CSS brace, I checked my file, found it was already correct, and did not apply another change.
+
+---------------------------------------------------------------------------------------------------------------------------
+Discoverability, Metadata, and Structured Content
+
+In Module 6, I made my capstone easier for people and machines to understand outside the visible page. I gave every page an accurate title and description, chose preferred URLs, added a social link preview and a small piece of structured data to Home, checked my image context, and validated everything on the live site. I also wrote down which search claims I won't make, because my evidence doesn't support them.
+
+1. Planning: metadata inventory (Readiness)
+
+Before changing any code, I made an inventory connecting each page to its purpose, its main user task, and what is actually visible on it.
+
+Page|	File|	Primary user task
+Home	index.html	Learn what solarpunk is and choose where to go next
+Tech Sovereignty	tech-sovereignty.html	Compare DIY resilience systems by function, complexity, cost, and maintainability
+Community Resilience	community-resilience.html	Find upcoming hands-on community workshops and their dates
+Gallery / Media	gallery.html	Browse visual concepts of solarpunk design ideas
+
+While auditing the pages, I found three things worth noting:
+My Home title was Home · Solarpunk Hub, which doesn't say what the page is about.
+None of my pages had a meta description.
+Two page intros promise more than the page shows. Community Resilience mentions "places, events, and networks" but only lists workshops, and Gallery / Media mentions "media" but only has images. I wrote my descriptions to match what is really on each page, not what the intros promise.
+2. Image text fix
+The Neighborhood Micro-Grid card on the Gallery page said "energy routing diagrams," but the image is an illustration of cottages, not a diagram. I changed one word in gallery.html so the nearby text matches the image:
+Commit: Update micro-grid card text to match illustration
+
+3. Titles, descriptions, and canonical links (all four pages)
+I replaced the <title> line in each page with a title, a meta description, and a canonical link. The titles and descriptions are the options I chose from AI-drafted alternatives during planning.
+
+Page	Title	Change
+Home	What Is Solarpunk? Start Here · Solarpunk Hub	Changed (matches the visible "What is solarpunk?" section)
+Tech Sovereignty	Tech Sovereignty · Solarpunk Hub	Kept
+Community Resilience	Community Resilience Workshops · Solarpunk Hub	Changed (workshops are the main content)
+Gallery / Media	Gallery / Media · Solarpunk Hub	Kept (media is planned; I'll retitle it if I don't add any)
+
+Each page's canonical points to itself with a full https:// URL. For Home, I chose the shorter URL without index.html, because the page loads at both addresses:
+
+
+4. Social preview tags (Home)
+I added Open Graph tags to Home, the page people would share to introduce the site. The values match the visible page. Open Graph uses property= instead of name=, and the image must be a full URL so other platforms can fetch it.
+og:url matches my canonical exactly, so the two agree.
+Commit: Add page metadata, canonicals, and Home social tags
+
+5. Structured data (Home)
+I added a small JSON-LD block describing the site's name and home address. Both are true and visible on the page: "Solarpunk Hub" appears in the header and footer.
+What I chose not to add: I did not use the Event type for the workshops on Community Resilience. They are example events I made up for the capstone, so marking them as events would tell search engines that real events exist.
+An honest limit: Google's site-name documentation says site names are not supported at the subdirectory level. My site lives in the /Capstone-project/ folder, so this markup is valid and accurate, but I don't expect it to change how my site name appears in Google.
+Commit: Add WebSite structured data to Home
+
+6. Links and headings
+Every page has one <h1> and an <h2> for each main section. All internal links are real <a href> links with descriptive text, so they can be crawled and make sense out of context. Home also links to the two main sections through its "Explore Tech Sovereignty" and "Find community resources" buttons. I considered adding links inside the page content between related topics, such as from the Solar Caddy table row to the Solar Caddy Repair Café workshop, but decided not to in this version.
+
+7. Image context
+Image|	Alt decision|	Nearby context
+neighborhood-microgrid.jpg (Home hero, Gallery card, social image)	Informative	Home <h1>; Gallery <h3> Neighborhood Micro-Grid
+passive-cooling-arcades.jpg	Informative	Gallery <h3> Passive Cooling Arcades
+subsurface-wick-irrigation.jpg	Informative	Gallery <h3> Sub-Surface Wick Irrigation
+circuit-tree-icon-192x192.png (logo)	Decorative, alt=""; the link text names it	Site name beside it
+Heart-handshake icon (inline SVG)	Decorative, aria-hidden="true"	<h2> Community Workshops
+
+All filenames are descriptive and hyphenated, and every <img> has width and height.
+
+8. Canonical, robots, and sitemap decisions
+Canonical: applies now. Each page has a self-referencing canonical. A canonical is a signal to search engines, not a command.
+Robots: not needed. No page uses noindex, which I confirmed in the page source. A robots.txt would have to live at the root of ajfrenc5.github.io, outside this repository.
+Sitemap: deferred to release. All four pages are linked from the main nav on every page, so they can be found through ordinary links. I'll add a sitemap once the page list is final.
+9. Validation (live site, October 9, 2026)
+Check|	Tool|	Result
+Metadata is published	View Page Source, all 4 pages	Title, description, and canonical on lines 6–8; Home Open Graph on lines 10–19 and JSON-LD on lines 21–29
+HTML validity	W3C Nu HTML Checker, all 4 pages	"No errors or warnings to show" on every page
+Structured data syntax	Schema Markup Validator	1 WebSite item, 0 errors, 0 warnings
+Structured data eligibility	Google Rich Results Test	"No items detected," page crawled successfully (expected, since WebSite isn't a rich result type)
+Social preview	Discord link preview	Site name, title, description, and image displayed correctly; Discord chose a small thumbnail
+
+These checks show my metadata is published, my HTML is valid, my structured data is valid Schema.org, and at least one platform reads my preview tags correctly. They don't measure ranking, traffic, or shares.
+
+10. Claims I'm not making
+That my structured data will make "Solarpunk Hub" appear as a site name in Google.
+That my new titles and descriptions will improve my ranking or control my search snippets. Google can rewrite both.
+That my social tags will increase shares or traffic.
+That my canonicals force Google to choose my preferred URL.
+11. Carry forward to Module 7
+If I resize or rename neighborhood-microgrid.jpg during performance work, I need to update og:image and its width and height, then retest the social preview.
+If my site's URL ever changes, I need to update all four canonicals, og:url, and the JSON-LD url.
+I'll rerun the W3C, Schema Markup, Rich Results, and social preview checks during release testing.
+Open items: decide the Gallery / Media title and fix the Community Resilience intro.
+AI disclosure
+
+I used Claude (Anthropic) as a guide throughout Module 6.
+
+Purpose: to review my HTML files, explain the concepts, draft options, and check my screenshots as I worked.
+What the AI produced: two or three options for each page title and meta description; the Open Graph values; the JSON-LD block; wording options for an HTML comment; my commit messages; and drafts of my planning inventory, my deliverable document, and this log, written from my decisions and evidence.
+How I verified it: I checked every title and description against what is actually visible on each page. I inspected the live page source for all four pages and ran the W3C Nu HTML Checker, Schema Markup Validator, Google Rich Results Test, and a Discord link preview myself. The AI's statement that Google doesn't support site names for subdirectory sites was checked against Google's own site-name documentation.
+What I decided and changed: I chose the final titles and descriptions and kept two existing titles. I changed "diagrams" to "concepts" on the Gallery page. I picked a more conversational comment for the Open Graph block, decided not to add contextual links, and decided against Event structured data because my workshops are examples. I made every code edit myself in VS Code and pushed through GitHub Desktop.
