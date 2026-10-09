@@ -69,4 +69,67 @@ Metadata: every page has a unique <title>. (Test: inspect page source.)
 Release quality: zero syntax errors. (Test: W3C HTML validator.)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
+CSS Architecture
 
+I built the CSS foundation the rest of the project depends on.
+
+Readiness: CSS inventory from my planning package
+
+Before writing CSS, I turned my planning package into a CSS inventory:
+
+Repeated components: the header menu, content blocks used across Home, Gallery, and DIY pages, the DIY comparison table, step-by-step project lists, and image containers with artist credits and license notes.
+Foundational decisions: text contrast of at least 4.5:1, system font fallbacks, consistent spacing, max-width containers, subtle borders, and a visible keyboard focus outline.
+Layout needs: grids that collapse to one column on mobile, a header that moves from horizontal to stacked, a scroll wrapper for the comparison table under 600px, and fluid image sizing.
+States: focus, current page across the four pages, and hover/active feedback.
+Print needs: DIY project checklists and system summaries should print cleanly as reference sheets.
+Biggest risk: the side-by-side comparison table breaking the layout on small screens.
+Practice: refactoring a messy stylesheet
+
+Before refactoring my own CSS, I practiced on a provided messy stylesheet:
+
+Removed duplicate header and .site-header blocks that declared the same padding and background.
+Replaced repeated hardcoded values (
+#8c1d40, 
+#ffc627, 24px, 12px, 8px, 4px) with :root tokens.
+Shortened .site-header nav ul li a to .site-header nav a, and merged the :hover and [aria-current="page"] rules so they share declarations.
+Reduced selector specificity in those two places.
+Collapsed duplicated header, button, card, and callout rules without changing the visual result.
+Tested at desktop (over 700px) and mobile (700px and under) widths.
+Organization and cascade
+The stylesheet is organized with native cascade layers, from broadest to narrowest: @layer reset, base, layout, components, utilities, overrides;
+Later layers override earlier layers regardless of selector specificity, so my selectors stay flat (mostly single classes) and I don't need !important in screen styles.
+reset normalizes browser defaults and sets box-sizing: border-box.
+base holds the design tokens in :root and default styles for bare HTML elements.
+layout holds page-level containers and wrappers: .site-container, .site-header, .site-main, .grid-cards, .table-scroller, .site-footer.
+Design tokens
+
+All tokens are declared in :root and named by purpose rather than appearance (for example, --color-primary instead of --color-green):
+
+Color: surface, text, primary, accent, border, warning, link, and focus tokens.
+Type: --font-base (Anta), --font-heading (Press Start 2P), --line-height-base: 1.6, --line-height-heading: 1.4.
+Spacing: --space-1 through --space-16.
+Shape and elevation: radius scale, --border-width, --shadow-subtle, --shadow-raised.
+Layout: --container-max: 72rem, --measure-text: 65ch.
+Components
+Primary navigation (.site-nav-list, .site-nav-link) with padded touch targets and hover and current-page states.
+Action button (.button) with locally scoped variables (--button-bg, --button-fg, --button-border, --button-hover-bg), styling <a> and <button> the same way.
+Art card (.art-card) for the gallery.
+Comparison table (.comparison-table) inside a .table-scroller for horizontal scrolling on small screens.
+Callout alert (.callout-alert) with scoped --alert-accent and --alert-bg so color variants can be swapped without changing its structure.
+Utilities and states
+Utilities: .visually-hidden, .eyebrow, .cluster.
+States: :hover, :active (a 1px press on buttons), :focus-visible (a 3px outline with a 2px offset), [aria-current="page"], and :target (an outline flash when an in-page link jumps to a section).
+Print support
+
+An @media print block hides the header, footer, and buttons, removes backgrounds and forces black text, unwraps the table scroller so tables print flat, avoids page breaks inside cards, tables, and callouts, and prints external link URLs beside their link text.
+
+Refactoring
+Consolidated duplicate .button, .btn, and button rules into a single .button component.
+Separated page structure (layout layer) from component presentation (components layer).
+Module 2 testing
+Narrow (320–375px): header wraps cleanly, the table scrolls inside its container, and cards drop to one column.
+Wide (1200px+): content caps at 72rem and centers.
+Keyboard: every link and button shows the visible focus ring.
+Print preview: navigation and buttons are hidden, backgrounds are removed, and link URLs print.
+
+--------------------------------------------------------------------------------------------------------------------------
