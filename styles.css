@@ -220,7 +220,6 @@
     border-radius: var(--radius-md);
     background-color: var(--color-surface-raised);
     margin-block: var(--space-6);
-    -webkit-overflow-scrolling: touch;
   }
 
   .site-footer {
@@ -557,7 +556,6 @@
     inline-size: 1px;
     block-size: 1px;
     overflow: hidden;
-    clip: rect(0 0 0 0);
     white-space: nowrap;
     clip-path: inset(50%);
   }
