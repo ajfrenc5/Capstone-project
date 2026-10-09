@@ -204,3 +204,84 @@ Module 3: Claude (Anthropic).
 Output considered: CSS and HTML snippets, testing procedures, the event placeholder content, explanations, and draft wording for my layout notes and code comments.
 Verification: I made every change in my own files, tested each one in the browser and DevTools, and chose my breakpoints from my own observations of where the content broke. I decided against one suggested layout (placing the intro beside the safety notice) and chose a different second grid. Claude identified the missing closing brace, and I fixed it in my file.
 What changed: Claude found several problems in my existing code: the duplicate font import, dead .art-card-body rules, a fixed 280px grid minimum, inline styles, and a footer license that didn't match my repository. I fixed all of them and built the responsive features described in Module 3.
+
+-----------------------------------------------------------------------------------------------------------------------
+Media and Typography
+
+In Module 4 I added the site's first real media (a logo, three illustrations, and an icon) and rebuilt the typography system. I documented where every asset came from directly in the HTML, so the provenance travels with the code.
+
+Asset inventory and provenance
+
+Every asset has an ASSET: comment right above it in the HTML that names the file, its source, its license or ownership, its purpose, and optimization notes.
+
+Licensing correction: before Module 4, my art cards had placeholder license lines ("CC BY-SA 4.0 · Open Source Design," "CC0 Public Domain · Solarpunk Commons," "CC BY 4.0 · Open Agriculture Lab"). Those described artwork that didn't exist. When I added the real illustrations, I removed those footers, because the images are my own AI-generated work and the old lines would have given false license information.
+
+Images I sourced and then dropped: I also downloaded 17 photos from Wikimedia Commons (amateur radio, beekeeping, pottery, woodworking, and others) and planned an image credits list using each file's "Use this file" attribution. I later decided not to use them and removed them from the repository, so none of them appear on the site.
+
+
+Dimensions: all three illustrations are 1248×832 JPGs. Every <img> has width and height attributes that match the file's real pixel size.
+Logo: the header logo uses the 192×192 version, displayed at 32×32. That's six times the display size, so it stays sharp on high-resolution screens. At first I pointed it at the 512×512 file by mistake, then switched it to the 192 file and corrected the comment to match.
+Loading: the Gallery images use loading="lazy" and decoding="async", so they don't download until the reader scrolls near them. The Home hero is the first thing on screen, so it uses fetchpriority="high" instead of lazy loading.
+Fluid sizing: my reset layer sets img, svg { max-inline-size: 100%; block-size: auto; }, so images never overflow narrow screens.
+Icon sizing: the logo is sized in rem (2rem) and the SVG icon in em (1.5em), so both scale with zoom and text size.
+File size (recorded, not yet fixed): the comments record each original size: 593 KB, 678 KB, and 694 KB. I did not add srcset/sizes, <picture>, WebP, or compression in Module 4. The site uses the same composition for each image at every width (a single illustration inside a card or beside the hero text), so there was no art-direction reason for <picture>, but the file sizes were still a known performance issue.
+Alt text and alternatives
+
+I decided each image's purpose before writing its alt text:
+Informative images get alt text that describes only what's actually drawn:
+Micro-grid: "Cottages with solar panels on green roofs, linked by cables to a central pavilion."
+Cooling arcades: "Shaded courtyard with curving arches, lattice canopies, and hanging plants around a central pool."
+Wick irrigation: "Garden bed cut away to show clay pots linked by rope wicks beneath rows of leafy plants."
+Decorative logo: alt="". The link text "Solarpunk Hub" already names the link, so describing the logo would make screen readers repeat it.
+Decorative SVG: the heart-handshake icon has aria-hidden="true" and focusable="false", because the heading text "Community Workshops" carries the meaning.
+Other media: the site has no audio, video, animation beyond the :target highlight from Module 3, or embeds, so captions, transcripts, and embed titles don't apply.
+Typography system
+
+I rebuilt the type system with three fonts, each with one job, all set through tokens in :root:
+
+css
+--font-base: "Space Grotesk", system-ui, sans-serif;  /* body text */
+--font-heading: "Anta", system-ui, sans-serif;         /* h1–h4 */
+--font-brand: "Press Start 2P", system-ui, monospace;  /* site name + buttons */
+Why I changed it: Press Start 2P is a wide pixel font that was hard to read as a heading font, and Anta was hard to read as body text. I asked for a futuristic but highly legible sans-serif and chose Space Grotesk for body text. Anta moved to headings, and Press Start 2P is now limited to the site name and buttons.
+Type scale: body text is 1rem, and headings use clamp() so they grow smoothly with the screen, for example h1 is clamp(1.25rem, 2.5vw + 0.5rem, 1.75rem).
+Line height: --line-height-base: 1.6 for body text and --line-height-heading: 1.4 for headings.
+Line length: prose is capped at --measure-text: 65ch.
+Spacing: body and headings use letter-spacing: -0.02em to tighten Space Grotesk and Anta slightly. The brand and buttons reset to 0, and their pixel font is set to a smaller 0.75rem with 1.6 line height so buttons don't overflow on phones. The site name is 1rem, placed after the shared rule so it wins.
+No faux bold: Anta and Press Start 2P only come in weight 400, but my headings, buttons, site name, and table headers were asking for bold. Browsers fake bold by smearing the letters, so I set all of those to font-weight: 400.
+Fallbacks: each stack falls back to system-ui and then a generic family, so the page stays readable if Google Fonts fails to load.
+
+Fonts load with one <link> to Google Fonts in each page's <head>, with preconnect hints for fonts.googleapis.com and fonts.gstatic.com so the connection starts early.
+display=swap shows the fallback font immediately and swaps in the web font when it arrives, so text is never invisible while fonts load.
+Space Grotesk is requested only in the weights I use (400–700).
+A comment above the link lists all three fonts and the job each one does.
+Layout-shift note: with swap, text can reflow slightly when the web font replaces the fallback, because the fonts have different widths. I limited the risk by keeping the widest font (Press Start 2P) to short, small text (the site name and buttons).
+Layout stability
+Every <img> has width and height, so the browser reserves the correct space (3:2 for the illustrations, 1:1 for the logo) before the file downloads, and content below doesn't jump.
+The logo box is fixed at 2rem × 2rem with flex-shrink: 0, and the SVG icon at 1.5em × 1.5em, so neither can collapse or push the text around.
+The hero loads with high priority, so the largest image on Home isn't delayed.
+Fixes along the way
+Stray } in styles.css: an extra brace after the .comparison-table th rule was closing the components layer early. The browser then threw away my whole utilities layer, so .eyebrow, .cluster, and .visually-hidden stopped working. I removed it.
+Missing line-height tokens: when I replaced the typography tokens, I accidentally deleted --line-height-base and --line-height-heading, so the page fell back to the browser's default line spacing. I restored them.
+Removed the 60.5em table-header breakpoint: my Module 3 breakpoint only existed because the pixel font made the table headers too wide. With Anta for headers, it's no longer needed, so table headers now use Anta at every width.
+Rebrand: I renamed the site from "Solarpunk Field Guide" to "Solarpunk Hub" in the page title, header, hero text, and footer.
+Header markup: I fixed the brand link so it closes right after "Solarpunk Hub," keeping the navigation outside it.
+Mockups
+
+I updated my Figma file so it matches the live site: a grayscale wireframe page and a mockup page with my real colors and fonts, each showing all four pages at desktop (1440px), tablet (768px), and mobile (390px). The Home mockup led to the new hero layout, with the text and the micro-grid illustration side by side on wide screens and stacked on narrow ones.
+
+Module 4 checks
+Refreshed the page after each change and confirmed the logo and "Solarpunk Hub" sit side by side, the site name and buttons are in Press Start 2P, the navigation and body text are in Space Grotesk, and table headers are in Anta at every width.
+Checked the header markup (lines 19–25) and confirmed the logo comment names the file that's actually loaded.
+Confirmed every image has width/height matching its real pixel size, and recorded each file size in its comment.
+Confirmed the utilities layer works again after removing the stray brace.
+
+Known limitations carried forward: the three illustrations are 593–694 KB with no responsive sizes or compression, and font swapping can cause small text reflow.
+
+Module 4 AI disclosure
+Tools: Gemini and Claude (Anthropic).
+Gemini: I used Gemini to generate the site logo and the three illustrations (neighborhood micro-grid, passive cooling arcades, and wick irrigation). I wrote the prompts, chose the results, and labeled every one as AI-generated in its asset comment.
+Claude: I used Claude as a step-by-step guide. It explained concepts, suggested code snippets and comment wording, recommended Space Grotesk when I asked for a futuristic but legible sans-serif, explained how to credit Wikimedia Commons images, updated my Figma wireframes and mockups to match my site, and reviewed my files for errors.
+What I decided: I chose which fonts did which job (Press Start 2P for the site name and buttons, Anta for headings), chose to remove the breakpoint instead of rewriting the note, decided to drop the Wikimedia photos, and decided which images were informative or decorative.
+Verification: I made every change in my own files and checked each one in the browser. Claude found the stray brace, the missing line-height tokens, the faux-bold weights, and the outdated logo and font comments, and I fixed each one myself.
+What I didn't do: responsive image sets, <picture>, and image compression were not done in this module, so this log doesn't claim them.
