@@ -133,3 +133,74 @@ Keyboard: every link and button shows the visible focus ring.
 Print preview: navigation and buttons are hidden, backgrounds are removed, and link URLs print.
 
 --------------------------------------------------------------------------------------------------------------------------
+Responsive Layout Systems
+
+In Module 3 I extended my Module 2 architecture into a responsive layout system, building on it rather than replacing it.
+
+Cleanup before starting
+Removed the duplicate font load. Fonts were loading twice, through the HTML <link> and a CSS @import. I deleted the @import, which also delayed rendering. I verified that both fonts still load.
+Removed inline styles. I moved the site title's inline font styles into a .site-brand class (components layer) and the footer's inline justify-content into a .site-footer-inner class (layout layer). The page no longer has inline styles, so all styling runs through cascade layers.
+Corrected the footer license. The footer linked to Creative Commons, which didn't match my repository license. It now reads "Code licensed under GNU GPLv3" and links to the LICENSE file on GitHub.
+Part 1: Responsive foundation
+Fluid gutter: I added --gutter: clamp(1rem, 0.5rem + 2vw, 2.5rem). The side spacing is never tighter than 1rem on small screens, grows with the viewport, and stops at 2.5rem on wide screens. The rem portion keeps it responsive to zoom and font size.
+Container: .site-container uses inline-size: min(100% - (var(--gutter) * 2), var(--container-max)) with margin-inline: auto. It fills the screen minus the gutters, caps at 72rem, and uses logical properties.
+Print: I updated the print rule to reset inline-size: 100% so it matches the new container.
+Part 2: Advanced Grid patterns
+Art card grid: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr)). Cards reflow from three to two to one column with no media queries. I replaced the original fixed 280px minimum with min(100%, 17.5rem) so a card can never overflow a narrow or zoomed screen, and rem keeps the cards proportional to the user's font size.
+Community workshop schedule: fit-content(10rem) 1fr on a <dl>. The date column sizes to its longest date up to a 10rem cap, and dates stay aligned across all rows. This complements the card grid: that grid decides how many columns fit, while this one sizes a column to its content. I used <dl> to pair each <time> with its event details.
+
+I considered a grid placing the intro beside the safety notice and decided against it. I added the Community section to the home page for now. The nav links are placeholders for separate pages I plan to build later.
+
+Part 3: Subgrid
+
+The art cards use subgrid: grid-row: span 3; grid-template-rows: subgrid; row-gap: 0;. Each card borrows three rows from the parent grid (title, description, footer), so these line up across every card in a row even when one title wraps to two lines.
+
+While doing this I found and removed dead .art-card-body rules left over from my Module 2 markup cleanup. They targeted a wrapper that no longer existed, so the cards had lost their padding and footer alignment.
+
+Part 4: Container-query component
+
+The event schedule is a reusable container-query component:
+
+The .event-schedule-wrap wrapper is a named container: container: event-schedule / inline-size.
+The default layout stacks each date above its event details.
+@container event-schedule (inline-size >= 30rem) switches to the two-column fit-content(10rem) 1fr grid.
+
+I chose a container query rather than a media query because the schedule's layout depends on the space it has, not the screen size. On a future Community page it may sit in a narrower column, where a viewport media query would keep two columns on a wide screen and squeeze the event details.
+
+Part 5: Content-driven breakpoints
+
+I found my breakpoints by testing in DevTools responsive mode from 320px upward and noting where the content actually broke, not by device sizes. Breakpoints are written in em so they respond to zoom and font size.
+
+Breakpoint	What I observed	What changes
+26em (~416px)	All four nav links first fit on one row at about 410–420px. Below that they wrapped into uneven rows.	Below 26em the nav is a 2×2 grid. At 26em and up it is a single row.
+60.5em (~968px)	The full comparison table first fit without scrolling at 965px. The wide Press Start 2P headers were forcing the scroll.	Below 60.5em the table headers use Anta to reduce scrolling. At 60.5em and up they use Press Start 2P.
+None	Spacing looked good from 320px up and never felt cramped.	No breakpoint needed; the clamp() gutter and spacing tokens scale fluidly.
+
+These connect directly to my planning package. My Module 1 acceptance criteria guessed at round numbers: stack the nav under 768px and scroll the table under 600px. Testing the real content showed different points. The nav only needs to change below about 416px, and with the wide pixel font the table actually needed to scroll all the way up to about 965px. My CSS inventory had already named the comparison table as the biggest layout risk, and testing confirmed it.
+
+Part 6: User preferences
+
+I added a prefers-reduced-motion: reduce query:
+
+The :target highlight becomes a static outline, so users still see where a link took them, without the animation.
+The button's 1px press shift is removed.
+Color transitions are kept, because a color change is not movement.
+Part 7: Feature and fallback strategy
+Subgrid is wrapped in @supports (grid-template-rows: subgrid). The fallback, written first, is a flex column where the paragraph grows to keep footers aligned at the bottom of each card.
+Container query: the stacked schedule is the default, so browsers without container query support still get a layout that is readable at any width.
+Bug found and fixed
+
+My reduced-motion block had ended up inside the @container block because of a missing closing brace. That left the components layer unclosed and trapped the utilities, overrides, and print sections inside it. I added the missing brace and moved the reduced-motion query out on its own.
+
+AI disclosure
+
+Module 1: AI-assisted planning templates. I used AI to brainstorm and format the required planning templates. I considered its table structure, simplified criteria wording, and template setup. I verified and changed the output by setting every content inventory item to "Missing," to accurately show that no assets had been written or sourced yet.
+
+Module 2: Gemini. I used Gemini as a collaborative web design assistant to format the cascade layer scaffolds, validate token naming syntax, generate mock table rows for the prototype, draft initial refactoring comparison tables, review my work, and explain failure points.
+
+Module 3: Claude (Anthropic).
+
+ Because the course did not include direct instruction on these techniques, I used Claude as a step-by-step tutor. It audited my files against the assignment's required parts, explained each CSS technique (clamp(), min(), minmax(), fit-content(), subgrid, container queries, @supports, and preference queries), and gave me one step at a time with the exact code to change.
+Output considered: CSS and HTML snippets, testing procedures, the event placeholder content, explanations, and draft wording for my layout notes and code comments.
+Verification: I made every change in my own files, tested each one in the browser and DevTools, and chose my breakpoints from my own observations of where the content broke. I decided against one suggested layout (placing the intro beside the safety notice) and chose a different second grid. Claude identified the missing closing brace, and I fixed it in my file.
+What changed: Claude found several problems in my existing code: the duplicate font import, dead .art-card-body rules, a fixed 280px grid minimum, inline styles, and a footer license that didn't match my repository. I fixed all of them and built the responsive features described in Module 3.
